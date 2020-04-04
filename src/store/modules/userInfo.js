@@ -1,16 +1,14 @@
 import asyncRoutes from '../../router/asyncRoutes'
-import router, { resetRouter } from '@/router'
+import router, {
+  resetRouter
+} from '@/router'
 
-function filterRoutes(filterRoutes,role){
-  console.log(filterRoutes,'SDFDSF')
+function filterRoutes(filterRoutes, role) {
   let res = [];
   filterRoutes.forEach(route => {
     const roles = route.meta.roles;
-    if (roles.includes(role)) {
-      res.push(route)
-    }
+    roles.includes(role) ? res.push(route) : ''
   })
-  console.log(res)
   return res
 }
 const userInfo = {
@@ -33,8 +31,8 @@ const userInfo = {
       state.userName = userName
     },
     addUser(state, userInfo) {
-      const accessRoutes=filterRoutes(asyncRoutes,userInfo.role);
-      console.log('该用户拥有以下路由',accessRoutes)
+      const accessRoutes = filterRoutes(asyncRoutes, userInfo.role);
+      console.log('该用户拥有以下路由', accessRoutes)
       resetRouter()
       router.addRoutes(accessRoutes)
       state.routes = accessRoutes
