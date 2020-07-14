@@ -12,17 +12,18 @@ function filterRoutes(filterRoutes, role) {
   return res
 }
 const userInfo = {
+  namespaced: true,
   state: {
     userid: 1,
     userName: '',
     role: '',
-    routes: []
+    routeList: []
   },
   getters: {
     routes(state) {
-      let list = state.routes.filter(item => item.meta.ismenu);
+      let list = state.routeList.filter(item => item.meta.ismenu);
       return list
-    }
+    },
   },
   mutations: {
     editUser(state, {
@@ -30,12 +31,20 @@ const userInfo = {
     }) {
       state.userName = userName
     },
-    addUser(state, userInfo) {
-      const accessRoutes = filterRoutes(asyncRoutes, userInfo.role);
-      console.log('该用户拥有以下路由', accessRoutes)
+    addUser(state, {userName,userid,role}) {
+      const accessRoutes = filterRoutes(asyncRoutes,role);
       resetRouter()
+      state.userName=userName;
+      state.userid=userid;
+      state.role=role;
+      state.routeList=accessRoutes;
       router.addRoutes(accessRoutes)
-      state.routes = accessRoutes
+    }
+  },
+  actions:{
+    addUserInfo({commit},param){
+      console.log(param)
+      commit('addUser',param)
     }
   }
 }

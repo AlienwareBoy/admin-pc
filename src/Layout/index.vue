@@ -4,31 +4,30 @@
       <div class="system-icon">
         <img :src="logo" alt />
       </div>
-      <div class="navigation">
-        <el-row class="tac">
-          <el-col :span="24">
-            <!--  :default-active="base"  -->
+      <keep-alive>
+        <div class="navigation">
+          <el-row class="tac">
+            <el-col :span="24">
+              <el-menu background-color="#3e294d" text-color="#fff" active-text-color="#FFD04B" menu-trigger="click" class="el-menu-vertical-demo" router>
+                <template v-for="navMenu in routes">
+                  <el-submenu :data="navMenu" :index="navMenu.name" :key="navMenu.meta.id">
+                    <template slot="title">
+                      <i class="el-icon-location"></i>
+                      <span> {{navMenu.meta.menuTitle}}</span>
+                    </template>
+                    <template v-for="(route,index2) in navMenu.children">
+                      <el-menu-item :index="navMenu.path+'/'+ route.name" :key="index2">
+                        {{ route.meta.title }}
+                      </el-menu-item>
+                    </template>
+                  </el-submenu>
+                </template>
+              </el-menu>
+            </el-col>
+          </el-row>
+        </div>
+      </keep-alive>
 
-            <el-menu background-color="#3e294d" text-color="#fff" active-text-color="#FFD04B" menu-trigger="click"
-              class="el-menu-vertical-demo" unique-opened router>
-              <template v-for="navMenu in routes">
-                <el-submenu :data="navMenu" :index="navMenu.name" :key="navMenu.meta.id">
-                  <template slot="title">
-                    <i class="el-icon-location"></i>
-                    <span> {{navMenu.meta.menuTitle}}</span>
-                  </template>
-                  <template v-for="(route,index2) in navMenu.children">
-                    <el-menu-item :index="navMenu.path+'/'+ route.name" :key="index2">
-                      {{ route.meta.title }}
-                    </el-menu-item>
-                  </template>
-                </el-submenu>
-
-              </template>
-            </el-menu>
-          </el-col>
-        </el-row>
-      </div>
     </div>
     <div class="main">
       <div class="header flex-space">
@@ -38,12 +37,8 @@
           <span>{{ nowRouteName }}</span>
         </div>
         <div class="setting">
-          <span class="userName" @click.stop="openSetting">用户名字</span>
-          <div class="settingGroup" v-if="isOpenSetting">
-            <ul>
-              <li>退出登录</li>
-            </ul>
-          </div>
+          <span class="userName">您好,{{userName}}</span>
+          <span @click.stop="outAdminClick">退出</span>
         </div>
       </div>
       <div class="content">
@@ -59,66 +54,61 @@
 </template>
 
 <script>
-  import {
-    mapState,
-    mapGetters
-  } from 'vuex'
-  import {
-    meauList
-  } from 'UTIL/meauList.js'
-  // import pageAside from 'COMPONENT/pageAside/pageAside'
-  // import pageHeader from 'COMPONENT/pageHeader/pageHeader'
-  export default {
-    name: "Layout",
-    data() {
-      return {
-        logo: require("IMAGES/logo.png"),
-        uniqueOpened: true,
-        isOpenSetting: false,
-        menuTitle: '',
-        includes: [],
-      };
-    },
-    components: {
-     
-    },
-    watch: {
-      $route: {
-        handler: function (to, from) {
-          this.menuTitle = to.meta.menu;
-          if (to.meta.keepAlive) {
-            !this.includes.includes(to.name) && this.includes.push(to.name);
-          }
-        },
-      },
-      immediate: true
-    },
-    computed: {
-      ...mapGetters([
-        'routes'
-      ]),
-      nowRouteName() {
-        return this.$route.meta.title;
-      },
-      
-    },
-    created(){
-      console.log(this.$router)
-    },
-    methods: {
-      openSetting() {
-        this.isOpenSetting = !this.isOpenSetting
-      },
-      select(e) {
-        console.log(e)
+import { mapState, mapGetters, mapAction } from 'vuex'
+import { meauList } from 'UTIL/meauList.js'
+export default {
+  name: 'Layout',
+  data() {
+    return {
+      logo: require('IMAGES/logo.png'),
+      uniqueOpened: true,
+      isOpenSetting: false,
+      menuTitle: '',
+      includes: []
+    }
+  },
+  watch: {
+    $route: {
+      handler: function(to, from) {
+        this.menuTitle = to.meta.menu
+        if (to.meta.keepAlive) {
+          !this.includes.includes(to.name) && this.includes.push(to.name)
+        }
       }
     },
-    components: {},
-  };
-
+    immediate: true
+  },
+  computed: {
+    ...mapState('userInfo', ['userName']),
+    ...mapGetters('userInfo', ['routes']),
+    nowRouteName() {
+      return this.$route.meta.title
+    }
+  },
+  methods: {
+    outAdminClick() {
+      sessionStorage.removeItem('userInfo')
+      location.href='/login'
+    },
+    filterRoutes(filterRoutes, role) {
+      let res = []
+      filterRoutes.forEach(route => {
+        const roles = route.meta.roles
+        roles.includes(role) ? res.push(route) : ''
+      })
+      return res
+    },
+    openSetting() {
+      this.isOpenSetting = !this.isOpenSetting
+    },
+    select(e) {
+      console.log(e)
+    }
+  },
+  components: {}
+}
 </script>
 
 <style scoped lang="scss">
-  @import "./index.scss";
-
+@import './index.scss';
 </style>

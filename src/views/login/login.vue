@@ -25,79 +25,86 @@
 </template>
 
 <script>
-  import {
-    mapState,
-    mapGetters,
-    mapActions
-  } from 'vuex';
-  export default {
-    name: "login",
-    data() {
-      var validatePass = (rule, value, callback) => {
-        if (value === "") {
-          callback(new Error("请输入密码"));
-        } else {
-          if (this.form.password !== "") {
-            this.$refs.ruleForm.validateField("checkPass");
-          }
-          callback();
+import { mapState, mapGetters, mapActions } from 'vuex'
+export default {
+  name: 'login',
+  data() {
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else {
+        if (this.form.password !== '') {
+          this.$refs.ruleForm.validateField('checkPass')
         }
-      };
-      return {
-        nums: 0,
-        form: {
-          account: "1",
-          password: "1",
-          nowUser: ""
-        },
-        rules: {
-          account: [{
+        callback()
+      }
+    }
+    return {
+      nums: 0,
+      form: {
+        account: '1',
+        password: '1',
+        nowUser: ''
+      },
+      rules: {
+        account: [
+          {
             required: true,
-            message: "请输入账号",
-            trigger: "blur"
-          }],
-          password: [{
+            message: '请输入账号',
+            trigger: 'blur'
+          }
+        ],
+        password: [
+          {
             required: true,
-            message: "请输入密码",
-            trigger: "blur"
-          }],
-          nowUser: [{
+            message: '请输入密码',
+            trigger: 'blur'
+          }
+        ],
+        nowUser: [
+          {
             required: true,
             message: '请先选择用户身份',
             trigger: 'change'
-          }],
-        }
-      };
-    },
-    components: {},
-    computed: {},
-    created() {
-      console.log(this.$store.state.userInfo)
-    },
-    methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate(valid => {
-          if (valid) {
-            this.$store.commit('addUser', {
+          }
+        ]
+      }
+    }
+  },
+  components: {},
+  computed: {},
+  mounted() {},
+  methods: {
+    ...mapActions('userInfo', ['addUserInfo']),
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.addUserInfo({
+            userName: '诡异',
+            userid: 1,
+            role: this.form.nowUser
+          })
+          sessionStorage.setItem(
+            'userInfo',
+            JSON.stringify({
               userName: '诡异',
               userid: 1,
               role: this.form.nowUser
             })
-            this.$router.push({
-              path: '/dashboard/index'
-            })
-          } else {
-            console.log("请填写完整");
-            return false;
-          }
-        });
-      }
+          )
+          this.$router.push({
+            path: '/dashboard/index'
+          })
+        } else {
+          console.log('请填写完整')
+          return false
+        }
+      })
     }
-  };
-
+  }
+}
 </script>
 
 <style scoped lang="scss">
-  @import "./login.scss";
-
+@import './login.scss';
 </style>

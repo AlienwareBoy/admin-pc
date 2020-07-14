@@ -1,4 +1,8 @@
-function setRem () {
+const {
+  construct
+} = require("core-js/fn/reflect")
+
+function setRem() {
   // 320 默认大小16px; 320px = 20rem ;每个元素px基础上/16
   let htmlWidth = document.documentElement.clientWidth || document.body.clientWidth
   //得到html的Dom元素
@@ -7,7 +11,7 @@ function setRem () {
   htmlDom.style.fontSize = htmlWidth / 20 + 'px'
 }
 // 初始化
- setRem()
+setRem()
 // 改变窗口大小时重新设置 rem
 window.onresize = function () {
   setRem()

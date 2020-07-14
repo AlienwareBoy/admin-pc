@@ -2,21 +2,22 @@ import router, {
   resetRouter
 } from './router'
 import store from './store'
+const userInfo = JSON.parse(sessionStorage.getItem('userInfo')) || '';
 router.beforeEach((to, from, next) => {
-  // console.log(to)
-  // console.log(store.state.userInfo.routes, 'store.state.userInfo.routes')
-  // if (!store.state.userInfo.id) {
-  //   next({path:'/login'})
-  // }
-  if (to.path === '/login') {
-    next()
-  } else {
-    try {
+  if (userInfo.userid) {
+    if (to.path === '/login') {
+      next({
+        path: '/'
+      });
+    } else {
+      if (store.state.userInfo.routeList.length === 0) {
+        store.dispatch('userInfo/addUserInfo', userInfo)
+        next({...to})
+        return
+      }
       next()
-    } catch (err) {
-      console.log(err)
     }
-
-
+  } else {
+    next()
   }
 });
