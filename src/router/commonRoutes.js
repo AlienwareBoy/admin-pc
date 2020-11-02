@@ -1,8 +1,8 @@
-import Layout from 'Layout/index'
+import Layout from '@/components/layout'
 const routes = [{
   path: "/",
   name: "login",
-  component: resolve => require(["VIEW/login/login.vue"], resolve),
+  component: resolve => require(["@/views/login/login.vue"], resolve),
   meta: {
     name: "login",
     title: "登录",
@@ -11,7 +11,7 @@ const routes = [{
 }, {
   path: "/404",
   name: "error",
-  component: resolve => require(["VIEW/404.vue"], resolve),
+  component: resolve => require(["@/views/404.vue"], resolve),
   meta: {
     name: "404",
     title: "数据异常",
@@ -29,7 +29,7 @@ const routes = [{
   },
   children: [{
     path: "index",
-    component: resolve => require(["VIEW/dashboard/dashboard.vue"], resolve),
+    component: resolve => require(["@/views/dashboard/dashboard.vue"], resolve),
     meta: {
       keepAlive: true
     }

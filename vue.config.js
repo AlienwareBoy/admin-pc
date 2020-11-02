@@ -3,6 +3,15 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 module.exports = {
+  devServer: {
+    proxy: {
+      '/': {
+        target: 'http://127.0.0.1:5000',
+        ws: true,
+        changeOrigin: true
+      },
+    }
+  },
   css: {
     loaderOptions: {
       css: {
@@ -14,11 +23,6 @@ module.exports = {
     //命名
     config.resolve.alias
       .set('@', resolve('src'))
-      .set('IMAGES', resolve('src/assets/images'))
-      .set('VIEW', resolve('src/views'))
-      .set('COMPONENT', resolve('src/components'))
-      .set('Layout', resolve('src/Layout'))
-      .set('UTIL', resolve('src/utils'))
     //打包文件带hash
     config.output.filename('[name].[hash].js').end()
 

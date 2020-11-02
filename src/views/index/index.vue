@@ -9,7 +9,9 @@
           <el-col :span="24">
             <div class="menu" v-for="(item, index1) in routes" :key="index1">
               <span>item.menuTitle</span>
-              <span v-for="(path,index2) in item.menuList">{{ path.meta.title }}</span>
+              <span v-for="(path, index2) in item.menuList">{{
+                path.meta.title
+              }}</span>
             </div>
             <!-- <el-menu default-active="2" menu-trigger="click" class="el-menu-vertical-demo" background-color="#3e294d"
               text-color="#fff" active-text-color="#FFD04B" unique-opened router>
@@ -31,7 +33,7 @@
     <div class="main">
       <div class="header flex-space">
         <div class="path">
-          <span>{{menuTitle}}</span>
+          <span>{{ menuTitle }}</span>
           <span v-if="menuTitle">/</span>
           <span>{{ nowRouteName }}</span>
         </div>
@@ -55,94 +57,99 @@
 </template>
 
 <script>
-  import {
-    meauList
-  } from 'UTIL/meauList.js'
-  // import pageAside from 'COMPONENT/pageAside/pageAside'
-  // import pageHeader from 'COMPONENT/pageHeader/pageHeader'
-  export default {
-    name: "",
-    data() {
-      return {
-        logo: require("../../assets/images/logo.png"),
-        uniqueOpened: true,
-        isOpenSetting: false,
-        menuTitle: '',
-        include: [],
+import {
+  meauList
+} from 'UTIL/meauList.js'
+import {commonApi} '../../api/test'
+export default {
+  name: "",
+  data() {
+    return {
+      logo: require("../../assets/images/logo.png"),
+      uniqueOpened: true,
+      isOpenSetting: false,
+      menuTitle: '',
+      include: [],
 
-      };
+    };
+  },
+  components: {
+    // pageAside,
+    // pageHeader
+  },
+  watch: {
+    $route: {
+      handler: function (to, from) {
+        console.log(to)
+        this.menuTitle = to.meta.menu;
+        if (to.meta.keepAlive) {
+          !this.include.includes(to.name) && this.includes.push(to.name);
+        }
+      },
     },
-    components: {
-      // pageAside,
-      // pageHeader
+    immediate: true
+  },
+  beforeRouteUpdate(to, from) {
+    // console.log(to, 'to')
+    // console.log(from, 'from')
+    // console.log(to, 'to')
+  },
+  computed: {
+    nowRouteName() {
+      return this.$route.meta.title;
     },
-    watch: {
-      $route: {
-        handler: function (to, from) {
-          console.log(to)
-          this.menuTitle = to.meta.menu;
-          if (to.meta.keepAlive) {
-            !this.include.includes(to.name) && this.includes.push(to.name);
+    routes() {
+      let allRoutes = this.$router.options.routes[1].children;
+      let routeList = [];
+      meauList.forEach(menuPath => {
+        let menuTitle = '';
+        let menuList = [];
+        allRoutes.forEach(route => {
+          if (route.meta.menuTitle === menuPath) {
+            menuTitle = route.meta.menuTitle;
+            menuList.push(route)
           }
-        },
-      },
-      immediate: true
-    },
-    beforeRouteUpdate(to, from) {
-      // console.log(to, 'to')
-      // console.log(from, 'from')
-      // console.log(to, 'to')
-    },
-    computed: {
-      nowRouteName() {
-        return this.$route.meta.title;
-      },
-      routes() {
-        let allRoutes = this.$router.options.routes[1].children;
-        let routeList = [];
-        meauList.forEach(menuPath => {
-          let menuTitle = '';
-          let menuList = [];
-          allRoutes.forEach(route => {
-            if (route.meta.menuTitle === menuPath) {
-              menuTitle = route.meta.menuTitle;
-              menuList.push(route)
-            }
-          })
-          menuList.forEach(nowRoute => {
-            nowRoute.children = Object.assign({}, nowRoute.children)
-          })
-          const obj = Object.assign({}, {
-            menuTitle,
-            menuList
-          })
-          routeList.push(obj)
         })
-        return routeList;
-      }
-    },
-    methods: {
-      openSetting() {
-        this.isOpenSetting = !this.isOpenSetting
-      },
-      // toPath(item) {
-      //   // return
-      //   // console.log(,'path')
-      //   console.log(`${this.$route.path}/${item.path}`,'-----1--------')
-      //   this.$router.push({
-      //     path: `/index/addUser`
-      //   });
-      // }
-    },
-    components: {},
-    created() {
-
+        menuList.forEach(nowRoute => {
+          nowRoute.children = Object.assign({}, nowRoute.children)
+        })
+        const obj = Object.assign({}, {
+          menuTitle,
+          menuList
+        })
+        routeList.push(obj)
+      })
+      return routeList;
     }
-  };
+  },
+  mounted(){
+    this.init();
+  },
+  methods: {
+    async init(){
+      console.log(1)
+      const result = await commonApi.getTest();
+      console.log(result)
+    },
+    openSetting() {
+      this.isOpenSetting = !this.isOpenSetting
+    },
+    // toPath(item) {
+    //   // return
+    //   // console.log(,'path')
+    //   console.log(`${this.$route.path}/${item.path}`,'-----1--------')
+    //   this.$router.push({
+    //     path: `/index/addUser`
+    //   });
+    // }
+  },
+  components: {},
+  created() {
 
+  }
+};
 </script>
 
 <style scoped lang="scss">
-  @import "./index.scss";
-
+@import "./index.scss";
 </style>

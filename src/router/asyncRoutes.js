@@ -1,4 +1,4 @@
-import Layout from 'Layout/index'
+import Layout from '@/components/layout'
 const asyncList = [{
     path: "/roles",
     name: "roles",
@@ -12,7 +12,7 @@ const asyncList = [{
     children: [{
       path: "addUser",
       name: "addUser",
-      component: resolve => require(["VIEW/addUser/addUser.vue"], resolve),
+      component: resolve => require(["@/views/addUser/addUser.vue"], resolve),
       meta: {
         name: "addUser",
         title: "增加用户",
@@ -33,7 +33,7 @@ const asyncList = [{
     children: [{
       path: "studentTable",
       name: "studentTable",
-      component: resolve => require(["VIEW/table/studentTable.vue"], resolve),
+      component: resolve => require(["@/views/table/studentTable.vue"], resolve),
       meta: {
         menuTitle: '表单管理',
         title: "学生表单",
@@ -42,7 +42,7 @@ const asyncList = [{
     }, {
       path: "teacherTable",
       name: "teacherTable",
-      component: resolve => require(["VIEW/table/teacherTable.vue"], resolve),
+      component: resolve => require(["@/views/table/teacherTable.vue"], resolve),
       meta: {
         menuTitle: '表单管理',
         title: "老师表单",
@@ -51,7 +51,7 @@ const asyncList = [{
     }, {
       path: "friendsTable",
       name: "friendsTable",
-      component: resolve => require(["VIEW/table/friendsTable.vue"], resolve),
+      component: resolve => require(["@/views/table/friendsTable.vue"], resolve),
       meta: {
         menuTitle: '表单管理',
         title: "同学表单",

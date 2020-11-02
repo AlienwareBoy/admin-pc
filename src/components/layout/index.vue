@@ -55,12 +55,12 @@
 
 <script>
 import { mapState, mapGetters, mapAction } from 'vuex'
-import { meauList } from 'UTIL/meauList.js'
+import { meauList } from '@/utils/meauList.js'
 export default {
   name: 'Layout',
   data() {
     return {
-      logo: require('IMAGES/logo.png'),
+      logo: require('../../assets/images/logo.png'),
       uniqueOpened: true,
       isOpenSetting: false,
       menuTitle: '',
