@@ -30,8 +30,10 @@ function resolve(res) {
         case 0:
           data = res.data;
 
-          if (data.status === 304) {
+          if (data.code === 404) {
             _elementUi.Message.error(data.msg);
+          } else if (data.code === 200) {
+            _elementUi.Message.success(data.msg);
           }
 
           return _context.abrupt("return", Promise.resolve(res));
@@ -62,3 +64,14 @@ function reject(err) {
 }
 
 request.interceptors.response.use(resolve, reject);
+request.interceptors.request.use(function (config) {
+  var token = sessionStorage.getItem("token");
+
+  if (token) {
+    config.headers['Authorization'] = 'Bearer ' + token;
+  }
+
+  return config;
+}, function (error) {
+  return Promise.reject(error);
+});

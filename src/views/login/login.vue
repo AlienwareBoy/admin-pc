@@ -77,36 +77,33 @@ export default {
     ...mapActions("userInfo", ["addUserInfo"]),
     async login() {
       const { data } = await commonApi.login(this.form);
-      console.log(data);
+      sessionStorage.setItem("token", data.data.token);
+      if (this.form.account === "13922289159") {
+        this.addUserInfo({
+          userName: this.form.account,
+          userid: 1,
+          role: "admin"
+        });
+      } else {
+        this.addUserInfo({
+          userName: this.form.account,
+          userid: 1,
+          role: "user"
+        });
+      }
+      this.$router.push({
+        path:'/dashboard'
+      })
     },
-    async register() {},
+    async register() {
+      const result = await commonApi.register(this.form);
+      console.log(result);
+    },
     submitForm(formName) {
       this.$refs[formName].validate(avalid => {
         if (avalid) {
           this.form.type === "0" ? this.login() : this.register();
         }
-
-        // if (valid) {
-        //   this.addUserInfo({
-        //     userName: "诡异",
-        //     userid: 1,
-        //     role: this.form.nowUser
-        //   });
-        //   sessionStorage.setItem(
-        //     "userInfo",
-        //     JSON.stringify({
-        //       userName: "诡异",
-        //       userid: 1,
-        //       role: this.form.nowUser
-        //     })
-        //   );
-        //   this.$router.push({
-        //     path: "/dashboard/index"
-        //   });
-        // } else {
-        //   console.log("请填写完整");
-        //   return false;
-        // }
       });
     }
   }
