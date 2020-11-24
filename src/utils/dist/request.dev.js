@@ -33,6 +33,8 @@ function resolve(res) {
           if (data.code === 404) {
             _elementUi.Message.error(data.msg);
           } else if (data.code === 200) {
+            console.log(data);
+
             _elementUi.Message.success(data.msg);
           }
 

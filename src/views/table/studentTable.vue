@@ -5,12 +5,17 @@
 </template>
 
 <script>
+import { commonApi } from "../../api/login";
 export default {
    name: 'studentTable',
    data() {
        return {}
    },
-  components: {}
+  components: {},
+  async mounted(){
+     const result =await commonApi.test();
+     console.log(result)
+  }
 }
 </script>
 

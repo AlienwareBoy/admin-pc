@@ -81,13 +81,11 @@ export default {
       if (this.form.account === "13922289159") {
         this.addUserInfo({
           userName: this.form.account,
-          userid: 1,
           role: "admin"
         });
       } else {
         this.addUserInfo({
           userName: this.form.account,
-          userid: 1,
           role: "user"
         });
       }

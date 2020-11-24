@@ -88,7 +88,8 @@ export default {
   methods: {
     outAdminClick() {
       sessionStorage.removeItem('userInfo')
-      location.href='/login'
+      sessionStorage.removeItem("token")
+      location.href='/'
     },
     filterRoutes(filterRoutes, role) {
       let res = []

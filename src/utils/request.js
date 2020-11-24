@@ -12,6 +12,7 @@ async function resolve(res) {
   if (data.code === 404) {
     Message.error(data.msg);
   } else if (data.code === 200) {
+    console.log(data)
     Message.success(data.msg);
   }
   return Promise.resolve(res)
