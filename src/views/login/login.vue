@@ -77,21 +77,13 @@ export default {
     ...mapActions("userInfo", ["addUserInfo"]),
     async login() {
       const { data } = await commonApi.login(this.form);
+      console.log(data);
       sessionStorage.setItem("token", data.data.token);
-      if (this.form.account === "13922289159") {
-        this.addUserInfo({
-          userName: this.form.account,
-          role: "admin"
-        });
-      } else {
-        this.addUserInfo({
-          userName: this.form.account,
-          role: "user"
-        });
-      }
+      sessionStorage.setItem("userInfo", JSON.stringify(data.data));
+      this.addUserInfo(data.data);
       this.$router.push({
-        path:'/dashboard'
-      })
+        path: "/dashboard"
+      });
     },
     async register() {
       const result = await commonApi.register(this.form);

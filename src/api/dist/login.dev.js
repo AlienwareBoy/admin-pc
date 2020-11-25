@@ -8,6 +8,9 @@ exports.commonApi = void 0;
 var _request = require("@/utils/request.js");
 
 var commonApi = {
+  getInfo: function getInfo() {
+    return _request.request.get('/api/common/info');
+  },
   test: function test() {
     return _request.request.get('/api/common/test');
   },

@@ -13,15 +13,12 @@ function filterRoutes(filterRoutes, role) {
 }
 const userInfo = {
   namespaced: true,
-  state: {
-    userid: 1,
-    userName: '',
-    role: '',
-    routeList: []
+  state:{
+    user:{}
   },
   getters: {
     routes(state) {
-      let list = state.routeList.filter(item => item.meta.ismenu);
+      let list = asyncRoutes.filter(item => item.meta.roles);
       return list
     },
   },
@@ -31,13 +28,13 @@ const userInfo = {
     }) {
       state.userName = userName
     },
-    addUser(state, {userName,userid,role}) {
-      const accessRoutes = filterRoutes(asyncRoutes,role);
+    addUser(state, user) {
+      const accessRoutes = filterRoutes(asyncRoutes,user.roles);
       resetRouter()
-      state.userName=userName;
-      state.userid=userid;
-      state.role=role;
-      state.routeList=accessRoutes;
+      console.log(user,'user')
+      state.user=user;
+      state.user.routeList=accessRoutes;
+      console.log(state,'state')
       router.addRoutes(accessRoutes)
     }
   },

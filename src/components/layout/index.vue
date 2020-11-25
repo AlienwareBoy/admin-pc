@@ -37,7 +37,7 @@
           <span>{{ nowRouteName }}</span>
         </div>
         <div class="setting">
-          <span class="userName">您好,{{userName}}</span>
+          <span class="userName">您好,{{user.account}}</span>
           <span @click.stop="outAdminClick">退出</span>
         </div>
       </div>
@@ -46,16 +46,15 @@
           <router-view v-if="$route.meta.keepAlive"></router-view>
         </keep-alive>
         <router-view v-if="!$route.meta.keepAlive" />
-        <!-- <span>欢迎使用vue管理后台</span>
-        <router-view></router-view> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters, mapAction } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 import { meauList } from '@/utils/meauList.js'
+import { commonApi } from "../../api/login";
 export default {
   name: 'Layout',
   data() {
@@ -79,13 +78,22 @@ export default {
     immediate: true
   },
   computed: {
-    ...mapState('userInfo', ['userName']),
+    ...mapState('userInfo', ['user']),
     ...mapGetters('userInfo', ['routes']),
     nowRouteName() {
       return this.$route.meta.title
     }
   },
+  mounted(){
+    this.getInfo();
+  },
   methods: {
+    ...mapActions("userInfo", ["addUserInfo"]),
+    async getInfo(){
+        const {data}= await commonApi.getInfo();
+        console.log(data)
+        this.addUserInfo(data.data);
+    },
     outAdminClick() {
       sessionStorage.removeItem('userInfo')
       sessionStorage.removeItem("token")
