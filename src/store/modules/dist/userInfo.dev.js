@@ -21,7 +21,7 @@ function filterRoutes(filterRoutes, role) {
   var res = [];
   filterRoutes.forEach(function (route) {
     var roles = route.meta.roles;
-    roles.includes(role) ? res.push(route) : '';
+    roles.includes(role) ? res.push(route) : "";
   });
   return res;
 }
@@ -33,11 +33,9 @@ var userInfo = {
   },
   getters: {
     routes: function routes(state) {
-      var list = _asyncRoutes["default"].filter(function (item) {
-        return item.meta.roles;
+      return _asyncRoutes["default"].filter(function (item) {
+        return item.meta.roles.includes(state.user.role);
       });
-
-      return list;
     }
   },
   mutations: {
@@ -46,21 +44,20 @@ var userInfo = {
       state.userName = userName;
     },
     addUser: function addUser(state, user) {
-      var accessRoutes = filterRoutes(_asyncRoutes["default"], user.roles);
+      var accessRoutes = filterRoutes(_asyncRoutes["default"], user.role);
       (0, _router.resetRouter)();
-      console.log(user, 'user');
       state.user = user;
-      state.user.routeList = accessRoutes;
-      console.log(state, 'state');
 
       _router["default"].addRoutes(accessRoutes);
+
+      state.user.routeList = accessRoutes;
     }
   },
   actions: {
     addUserInfo: function addUserInfo(_ref2, param) {
       var commit = _ref2.commit;
       console.log(param);
-      commit('addUser', param);
+      commit("addUser", param);
     }
   }
 };

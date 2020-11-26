@@ -23,12 +23,12 @@ var asyncList = [{
     path: "addUser",
     name: "addUser",
     component: function component(resolve) {
-      return require(["@/views/addUser/addUser.vue"], resolve);
+      return require(["@/pages/addUser/addUser.vue"], resolve);
     },
     meta: {
       name: "addUser",
       title: "增加用户",
-      keepAlive: true
+      keepAlive: false
     }
   }]
 }, {
@@ -45,18 +45,18 @@ var asyncList = [{
     path: "studentTable",
     name: "studentTable",
     component: function component(resolve) {
-      return require(["@/views/table/studentTable.vue"], resolve);
+      return require(["@/pages/table/studentTable.vue"], resolve);
     },
     meta: {
       menuTitle: '表单管理',
       title: "学生表单",
-      keepAlive: true
+      keepAlive: false
     }
   }, {
     path: "teacherTable",
     name: "teacherTable",
     component: function component(resolve) {
-      return require(["@/views/table/teacherTable.vue"], resolve);
+      return require(["@/pages/table/teacherTable.vue"], resolve);
     },
     meta: {
       menuTitle: '表单管理',
@@ -67,7 +67,7 @@ var asyncList = [{
     path: "friendsTable",
     name: "friendsTable",
     component: function component(resolve) {
-      return require(["@/views/table/friendsTable.vue"], resolve);
+      return require(["@/pages/table/friendsTable.vue"], resolve);
     },
     meta: {
       menuTitle: '表单管理',
