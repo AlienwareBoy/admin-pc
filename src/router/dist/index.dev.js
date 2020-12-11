@@ -51,7 +51,7 @@ var createRouter = function createRouter() {
 
 var router = createRouter();
 router.beforeEach(function (to, from, next) {
-  var token = sessionStorage.getItem("token");
+  var token = localStorage.getItem("token");
 
   if (!token) {
     next();

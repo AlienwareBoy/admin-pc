@@ -17,12 +17,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item>
-          <el-button
-            type="primary"
-            @click="submitForm('form')"
-            style="width:100%;"
-            >登录</el-button
-          >
+          <el-button type="primary" @click="submitForm('form')" style="width:100%;">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -30,16 +25,16 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapState,mapGetters,mapActions } from "vuex";
 import { commonApi } from "../../api/login";
 export default {
   name: "login",
-  data() {
-    var validatePass = (rule, value, callback) => {
-      if (value === "") {
+  data () {
+    var validatePass=(rule,value,callback) => {
+      if(value==="") {
         callback(new Error("请输入密码"));
       } else {
-        if (this.form.password !== "") {
+        if(this.form.password!=="") {
           this.$refs.ruleForm.validateField("checkPass");
         }
         callback();
@@ -74,25 +69,25 @@ export default {
     };
   },
   methods: {
-    ...mapActions("userInfo", ["addUserInfo"]),
-    async login() {
-      const { data } = await commonApi.login(this.form);
+    ...mapActions("userInfo",["addUserInfo"]),
+    async login () {
+      const { data }=await commonApi.login(this.form);
       console.log(data);
-      sessionStorage.setItem("token", data.data.token);
-      sessionStorage.setItem("userInfo", JSON.stringify(data.data));
+      localStorage.setItem("token",data.data.token);
+      localStorage.setItem("userInfo",JSON.stringify(data.data));
       this.addUserInfo(data.data);
       this.$router.push({
         path: "/dashboard"
       });
     },
-    async register() {
-      const result = await commonApi.register(this.form);
+    async register () {
+      const result=await commonApi.register(this.form);
       console.log(result);
     },
-    submitForm(formName) {
+    submitForm (formName) {
       this.$refs[formName].validate(avalid => {
-        if (avalid) {
-          this.form.type === "0" ? this.login() : this.register();
+        if(avalid) {
+          this.form.type==="0"? this.login():this.register();
         }
       });
     }

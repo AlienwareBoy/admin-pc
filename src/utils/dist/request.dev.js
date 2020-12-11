@@ -39,8 +39,8 @@ function resolve(res) {
             _elementUi.Message.error(data.msg);
 
             setTimeout(function () {
-              sessionStorage.removeItem('userInfo');
-              sessionStorage.removeItem("token");
+              localStorage.removeItem('userInfo');
+              localStorage.removeItem("token");
               window.location.href = "/";
             }, 500);
           }
@@ -73,7 +73,7 @@ function reject(err) {
 
 request.interceptors.response.use(resolve, reject);
 request.interceptors.request.use(function (config) {
-  var token = sessionStorage.getItem("token");
+  var token = localStorage.getItem("token");
 
   if (token) {
     config.headers["Authorization"] = "Bearer " + token;

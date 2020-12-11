@@ -52,12 +52,12 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState,mapGetters,mapActions } from 'vuex'
 import { meauList } from '@/utils/meauList.js'
 import { commonApi } from "../../api/login";
 export default {
   name: 'Layout',
-  data() {
+  data () {
     return {
       logo: require('../../assets/images/logo.png'),
       uniqueOpened: true,
@@ -68,49 +68,49 @@ export default {
   },
   watch: {
     $route: {
-      handler: function(to, from) {
-        this.menuTitle = to.meta.menu
-        if (to.meta.keepAlive) {
-          !this.includes.includes(to.name) && this.includes.push(to.name)
+      handler: function(to,from) {
+        this.menuTitle=to.meta.menu
+        if(to.meta.keepAlive) {
+          !this.includes.includes(to.name)&&this.includes.push(to.name)
         }
       }
     },
     immediate: true
   },
   computed: {
-    ...mapState('userInfo', ['user']),
-    ...mapGetters('userInfo', ['routes']),
-    nowRouteName() {
+    ...mapState('userInfo',['user']),
+    ...mapGetters('userInfo',['routes']),
+    nowRouteName () {
       return this.$route.meta.title
     }
   },
-  mounted(){
+  mounted () {
     this.getInfo();
   },
   methods: {
-    ...mapActions("userInfo", ["addUserInfo"]),
-    async getInfo(){
-        const {data}= await commonApi.getInfo();
-        console.log(data)
-        this.addUserInfo(data.data);
+    ...mapActions("userInfo",["addUserInfo"]),
+    async getInfo () {
+      const { data }=await commonApi.getInfo();
+      console.log(data)
+      this.addUserInfo(data.data);
     },
-    outAdminClick() {
-      sessionStorage.removeItem('userInfo')
-      sessionStorage.removeItem("token")
+    outAdminClick () {
+      localStorage.removeItem('userInfo')
+      localStorage.removeItem("token")
       location.href='/'
     },
-    filterRoutes(filterRoutes, role) {
-      let res = []
+    filterRoutes (filterRoutes,role) {
+      let res=[]
       filterRoutes.forEach(route => {
-        const roles = route.meta.roles
-        roles.includes(role) ? res.push(route) : ''
+        const roles=route.meta.roles
+        roles.includes(role)? res.push(route):''
       })
       return res
     },
-    openSetting() {
-      this.isOpenSetting = !this.isOpenSetting
+    openSetting () {
+      this.isOpenSetting=!this.isOpenSetting
     },
-    select(e) {
+    select (e) {
       console.log(e)
     }
   },
@@ -119,5 +119,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import './index.scss';
+@import "./index.scss";
 </style>

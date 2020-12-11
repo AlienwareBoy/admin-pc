@@ -17,8 +17,8 @@ async function resolve(res) {
   } else if (data.code === 10001) {
     Message.error(data.msg);
     setTimeout(() => {
-      sessionStorage.removeItem('userInfo')
-      sessionStorage.removeItem("token");
+      localStorage.removeItem('userInfo')
+      localStorage.removeItem("token");
       window.location.href = "/";
     },500);
     
@@ -33,7 +33,7 @@ async function reject(err) {
 request.interceptors.response.use(resolve, reject);
 request.interceptors.request.use(
   config => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     if (token) {
       config.headers["Authorization"] = "Bearer " + token;
     }
