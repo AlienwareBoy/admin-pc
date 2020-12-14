@@ -10,7 +10,7 @@ vue -V // 检测版本
 vue upgrade
 ```
 
-如果还不能运行尝试运行如下代码
+如果还不能运行尝试运行如下代码,有是vue-cli更新后，某些配置无法跟上节奏
 ```
 $ npm uninstall -g babel-cli unbuild babel-cli@6.0.15
 $ npm uninstall babel-preset-es2015 babel-preset-stage-0 --save
