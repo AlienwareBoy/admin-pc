@@ -24,16 +24,16 @@ module.exports = {
     }
   },
   configureWebpack: smp.wrap({
-    plugins: []
+    plugins: [
+      new DllReferencePlugin({
+          manifest: require('./dist/vue-manifest.json'),
+        }),
+        new DllReferencePlugin({
+          manifest: require('./dist/ui-manifest.json'),
+        }),
+    ]
   }),
-  plugins: [
-    new DllReferencePlugin({
-      manifest: require('./dist/dll/vue-manifest.json'),
-    }),
-    new DllReferencePlugin({
-      manifest: require('./dist/dll/ui-manifest.json'),
-    }),
-  ],
+  
   chainWebpack: (config) => {
     //命名
     config.resolve.alias
