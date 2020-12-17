@@ -5,8 +5,6 @@ module.exports = {
   entry: {
     vue: ['vuex', 'vue-router', 'axios'],
     ui: ['element-ui'],
-    // vue: ['vuex', 'vue-loader'],
-    // css: ['sass-loader', 'node-sass']
   },
   output: {
     filename: '[name].dll.js',
